@@ -7,11 +7,16 @@ namespace TheBookProject.Entities;
 public partial class Book
 {
     [Key]
-    public int Id { get; set; }
-    public string Tittle { get; set; }
-    public string Author { get; set; }
+    public string ISBN { get; set; }
+     public string? Origin { get; set; }
+    public string? Tittle { get; set; }
+    public string? SubTittle { get; set; }
+    public string? Author { get; set; }
     public string? Publisher { get; set; }
+    public string? Description { get; set; }
+    public string? PublishedDate { get; set; }
+    public int? PageCount { get; set; }
     public string? Category { get; set; }
-    public string? ISBN_10 { get; set; }
-    public double? ISBN_13 { get; set; }
+    public string? Language { get; set; }
+   
 }

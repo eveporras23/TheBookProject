@@ -24,7 +24,7 @@ public partial class TheBookProjectDbContext : DbContext
     {
         modelBuilder.Entity<Book>(entity =>
         {
-            entity.Property(e =>  e.Id).ValueGeneratedNever();
+            entity.Property(e =>  e.ISBN).IsRequired();
         });
 
         OnModelCreatingPartial(modelBuilder);

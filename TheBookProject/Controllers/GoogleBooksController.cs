@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TheBookProject.Models;
 using TheBookProject.Services;
 
 namespace TheBookProject.Controllers;
@@ -16,14 +17,14 @@ public class GoogleBooksController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<string> Get(string ISBN)
+    public async Task<string> Get(string isbn)
     {
-        return await _service.GetBookByISBNAsync(ISBN);
+        return await _service.GetBookByISBNAsync(isbn.Trim());
     }
     
     [HttpPost]
-    public async Task<string> Post(string ISBN)
+    public async Task<ResultRequest> Post(string isbn)
     {
-        return await _service.SaveBookByISBNAsync(ISBN);
+        return await _service.SaveBookByISBNAsync(isbn.Trim());
     }
 }
