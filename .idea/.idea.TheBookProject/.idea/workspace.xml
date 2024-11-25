@@ -11,23 +11,14 @@
   <component name="ChangeListManager">
     <list default="true" id="0949f7d0-b03f-408a-b141-ead8d14211bb" name="Changes" comment="">
       <changelist_data name="Eve Porras" email="" />
-      <change afterPath="$PROJECT_DIR$/TheBookProject/Helpers/JsonKeys.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TheBookProject/Models/GoogleBooksResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TheBookProject/Models/ResultRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TheBookProject/Services/BookService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheBookProject/.idea/dataSources/1ab0e1c7-a89a-4127-be3f-b79791ef3ef4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TheBookProject/.idea/dataSources/1ab0e1c7-a89a-4127-be3f-b79791ef3ef4.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheBookProject/.idea/dataSources/ce24de28-e1a1-44a2-9b48-d7f919a98e5c.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheBookProject/.idea/dataSources/ce24de28-e1a1-44a2-9b48-d7f919a98e5c/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheBookProject/.idea/dataSources/f4d15114-2dfb-441f-a16d-72eaa1e96234.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheBookProject/.idea/dataSources/f4d15114-2dfb-441f-a16d-72eaa1e96234/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TheBookProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TheBookProject/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TheBookProject.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/TheBookProject.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TheBookProject/Context/TheBookProjectDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TheBookProject/Context/TheBookProjectDbContext.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TheBookProject/Controllers/BookController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TheBookProject/Controllers/BookController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TheBookProject/Controllers/GoogleBooksController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TheBookProject/Controllers/GoogleBooksController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TheBookProject/Entities/Book.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TheBookProject/Entities/Book.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TheBookProject/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TheBookProject/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TheBookProject/Services/GoogleBooksService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TheBookProject/Services/GoogleBooksService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TheBookProject/Services/IGoogleBooksService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TheBookProject/Services/IGoogleBooksService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TheBookProject/TheBookProject.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TheBookProject/TheBookProject.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TheBookProject/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/TheBookProject/appsettings.Development.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TheBookProject/identifier.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/TheBookProject/identifier.sqlite" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -137,7 +128,7 @@
       <option name="presentableId" value="Default" />
       <updated>1731886719275</updated>
       <workItem from="1731886721068" duration="19777000" />
-      <workItem from="1732463110685" duration="10111000" />
+      <workItem from="1732463110685" duration="14380000" />
     </task>
     <servers />
   </component>
@@ -171,16 +162,29 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/TheBookProject/Services/GoogleBooksService.cs</url>
-          <line>58</line>
+          <line>64</line>
           <properties documentPath="C:\Users\patry\Documents\CENFOTEC\repos\TheBookProject\TheBookProject\Services\GoogleBooksService.cs" containingFunctionPresentation="Method 'SaveBookByISBNAsync'">
             <startOffsets>
-              <option value="1825" />
+              <option value="2027" />
             </startOffsets>
             <endOffsets>
-              <option value="1854" />
+              <option value="2056" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/TheBookProject/Services/GoogleBooksService.cs</url>
+          <line>131</line>
+          <properties documentPath="C:\Users\patry\Documents\CENFOTEC\repos\TheBookProject\TheBookProject\Services\GoogleBooksService.cs" containingFunctionPresentation="Method 'BuildBook'">
+            <startOffsets>
+              <option value="4367" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4432" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

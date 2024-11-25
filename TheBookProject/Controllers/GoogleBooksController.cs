@@ -25,6 +25,12 @@ public class GoogleBooksController : ControllerBase
     [HttpPost]
     public async Task<ResultRequest> Post(string isbn)
     {
-        return await _service.SaveBookByISBNAsync(isbn.Trim());
+        return await _service.AddBookByISBNAsync(isbn.Trim());
+    }
+    
+    [HttpPut("{isbn}")]
+    public async Task<ResultRequest> Put(string isbn)
+    {
+        return await _service.UpdateBookByISBNAsync(isbn.Trim());
     }
 }

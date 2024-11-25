@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using TheBookProject.Services;
 
 namespace TheBookProject.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BookController : ControllerBase
@@ -25,6 +27,7 @@ namespace TheBookProject.Controllers
         }
 
         // GET: api/Book
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBook()
         {
@@ -33,6 +36,7 @@ namespace TheBookProject.Controllers
         }
 
         // GET: api/Book/5
+        [AllowAnonymous]
         [HttpGet("{isbn}")]
         public async Task<ActionResult<Book>> GetBook(string isbn)
         {
@@ -63,7 +67,7 @@ namespace TheBookProject.Controllers
             await  _bookServiceInstance.UpdateBook(book);
 
             return NoContent();
-        }
+        } 
 
         // POST: api/Book
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
