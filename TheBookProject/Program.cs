@@ -46,6 +46,8 @@ builder.Services.AddSwaggerGen(opt =>
         }
     });
 });
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
 
 // ADD API
 builder.Services.AddHttpClient<IGoodReadsService, GoodReadsService>("GoodReadsAPI",client =>
@@ -65,6 +67,8 @@ builder.Services.AddScoped<IGoogleBooksService, GoogleBooksService>();
 
 var app = builder.Build();
 
+string? GoodReadsAPIKey = app.Configuration.GetValue<string>("AppSettings:GoodReadsAPIKey");
+ 
 // add middleware authorization
 app.UseAuthorization();
 
