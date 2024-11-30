@@ -11,6 +11,10 @@
   <component name="ChangeListManager">
     <list default="true" id="0949f7d0-b03f-408a-b141-ead8d14211bb" name="Changes" comment="">
       <changelist_data name="Eve Porras" email="" />
+      <change afterPath="$PROJECT_DIR$/TheBookProject/Middlewares/CustomExceptionHandlerMiddleware.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TheBookProject/Middlewares/CustomExceptionHandlerMiddlewareExtension.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TheBookProject/Middlewares/MaintenanceModeMiddleware.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.TheBookProject/.idea/dataSources/1ab0e1c7-a89a-4127-be3f-b79791ef3ef4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TheBookProject/.idea/dataSources/1ab0e1c7-a89a-4127-be3f-b79791ef3ef4.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TheBookProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TheBookProject/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TheBookProject/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TheBookProject/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TheBookProject/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/TheBookProject/appsettings.json" afterDir="false" />
@@ -42,7 +46,9 @@
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="2ozyV4MprmmXLnMIDDdWEeyomL8" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -123,7 +129,7 @@
       <option name="presentableId" value="Default" />
       <updated>1731886719275</updated>
       <workItem from="1731886721068" duration="19777000" />
-      <workItem from="1732463110685" duration="18796000" />
+      <workItem from="1732463110685" duration="23946000" />
     </task>
     <servers />
   </component>
@@ -167,6 +173,32 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/TheBookProject/Program.cs</url>
+          <line>72</line>
+          <properties documentPath="C:\Users\patry\Documents\CENFOTEC\repos\TheBookProject\TheBookProject\Program.cs" containingFunctionPresentation="">
+            <startOffsets>
+              <option value="2310" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2391" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/TheBookProject/Program.cs</url>
+          <line>74</line>
+          <properties documentPath="C:\Users\patry\Documents\CENFOTEC\repos\TheBookProject\TheBookProject\Program.cs" containingFunctionPresentation="">
+            <startOffsets>
+              <option value="2393" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2435" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

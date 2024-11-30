@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.OpenApi.Models;
 using TheBookProject.Context;
+using TheBookProject.Middlewares;
 using TheBookProject.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +47,8 @@ builder.Services.AddSwaggerGen(opt =>
         }
     });
 });
+
+//add the app settings file 
 builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
 
@@ -67,8 +70,10 @@ builder.Services.AddScoped<IGoogleBooksService, GoogleBooksService>();
 
 var app = builder.Build();
 
-string? GoodReadsAPIKey = app.Configuration.GetValue<string>("AppSettings:GoodReadsAPIKey");
- 
+bool isMaintainanceMode = app.Configuration.GetValue<bool>("isMaintainanceMode");
+
+app.UseCustomExceptionHandlerMiddleware();
+
 // add middleware authorization
 app.UseAuthorization();
 
@@ -83,6 +88,10 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseMiddleware<MaintenanceModeMiddleware>(isMaintainanceMode);
+
 app.MapControllers();
+
+app.MapGet("/Maintenance", () => "Estamos en mantenimiento");
 
 app.Run();
