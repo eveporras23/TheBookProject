@@ -1,9 +1,12 @@
+using FluentValidation.Results;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NuGet.Protocol;
 using TheBookProject.Db.Context;
 using TheBookProject.Db.Entities;
 using TheBookProject.Helpers;
 using TheBookProject.Models;
+using TheBookProject.Validators;
 
 
 namespace TheBookProject.Services;
@@ -11,25 +14,32 @@ namespace TheBookProject.Services;
 public class GoogleBooksService : IGoogleBooksService
 {
     private readonly HttpClient _httpClient;
-    private readonly TheBookProjectDbContext _dbContext;
-    private readonly BookService _bookServiceInstance;
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly TheBookProjectDbContext _context;
+    private readonly IBookService _bookService;
 
 
-    public GoogleBooksService(IHttpClientFactory httpClientFactory, TheBookProjectDbContext dbContext)
-    {
+    public GoogleBooksService(IHttpClientFactory httpClientFactory, TheBookProjectDbContext context, IBookService bookService)
+    { 
+        _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         _httpClient = httpClientFactory.CreateClient("GoogleBooksAPI");
-        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        _bookServiceInstance = new BookService(_dbContext);
+        _context= context ?? throw new ArgumentNullException(nameof(context));
+        _bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
     }
 
-    public async Task<string> GetBookByISBNAsync(string query)
+    public async Task<RequestResponse> GetBookByISBNAsync(string isbn)
     {
         try
         { 
+            var isDataValid = ValidateDataRequest(isbn);
+          
+            if (!isDataValid.Result) return isDataValid;
+            
+            
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{_httpClient.BaseAddress}/books/v1/volumes?q=isbn:{query}"),
+                RequestUri = new Uri($"{_httpClient.BaseAddress}/books/v1/volumes?q=isbn:{isbn}"),
             };
             
             var responseBody = string.Empty; 
@@ -40,13 +50,11 @@ public class GoogleBooksService : IGoogleBooksService
                 responseBody = await response.Content.ReadAsStringAsync();
             }
             
-            return responseBody;
+            return new RequestResponse(string.Empty, responseBody); 
         }
         catch (Exception e)
         {
-           
-            Console.WriteLine(e);
-            throw;
+            return new RequestResponse($"Google books API Error: Error while getting the book {e.Message}", null, false); 
         }
     }
 
@@ -54,34 +62,39 @@ public class GoogleBooksService : IGoogleBooksService
     {
         try
         {
-            if (_bookServiceInstance.BookExists(isbn))
+            var isDataValid = ValidateDataRequest(isbn);
+          
+            if (!isDataValid.Result) return isDataValid;
+            
+            if (_bookService.BookExists(isbn))
             {
-                return new RequestResponse("Book already added from Google Books API", null); 
+                return new RequestResponse("Book already exists in the database", null, false); 
             }
             
-            var responseBody = await GetBookByISBNAsync(isbn);
+            var requestResponse = await GetBookByISBNAsync(isbn);
              
-            GoogleBooksResponse? bookInfo  = JsonConvert.DeserializeObject<GoogleBooksResponse>(responseBody);;
+            if (!requestResponse.Result) return requestResponse;       
             
-            if (bookInfo == null || bookInfo.Items == null) return new RequestResponse("Google Books API Error: Not Found", null); 
+            GoogleBooksResponse? bookInfo  = JsonConvert.DeserializeObject<GoogleBooksResponse>(requestResponse.Book);;
+            
+            if (bookInfo == null || bookInfo.Items == null) return new RequestResponse("Google Books API Error: Not Found", null,false); 
             
             if (bookInfo.Items.Count > 0)
             {
                 var bookItem = bookInfo.Items[0];
                 Book newBook = BuildBook(bookItem, isbn);
-                await  _bookServiceInstance.AddBook(newBook);
-                return new RequestResponse("Book added from Google Books API", newBook); 
+                await  _bookService.AddBook(newBook);
+                return new RequestResponse("Book added from Google Books API", newBook.ToJson()); 
             }
             else
             {
-                return new RequestResponse("Google Books API Error: Not Found", null); 
+                return new RequestResponse("Google Books API Error: Not Found", null,false); 
             }
  
         }
         catch (Exception e)
         {
- 
-            throw;
+            return new RequestResponse($"Google books API Error: Error while adding the book {e.Message}", null, false); 
         }
     }
     
@@ -89,35 +102,61 @@ public class GoogleBooksService : IGoogleBooksService
     {
         try
         {
-            if (!_bookServiceInstance.BookExists(isbn))
+            
+            var isDataValid = ValidateDataRequest(isbn);
+          
+            if (!isDataValid.Result) return isDataValid;
+            
+            if (!_bookService.BookExists(isbn))
             {
-                return new RequestResponse("Book doesn't exist from Google Books API", null); 
+                return new RequestResponse("Book doesn't exist from Google Books API", null,false); 
             }
             
-            var responseBody = await GetBookByISBNAsync(isbn);
+            var requestResponse = await GetBookByISBNAsync(isbn);
              
-            GoogleBooksResponse? bookInfo  = JsonConvert.DeserializeObject<GoogleBooksResponse>(responseBody);;
+            if (!requestResponse.Result) return requestResponse;       
             
-            if (bookInfo == null || bookInfo.Items == null) return new RequestResponse("Google Books API Error: Not Found", null); 
+            GoogleBooksResponse? bookInfo  = JsonConvert.DeserializeObject<GoogleBooksResponse>(requestResponse.Book);;
+            
+            if (bookInfo == null || bookInfo.Items == null) return new RequestResponse("Google Books API Error: Not Found", null,false); 
             
             if (bookInfo.Items.Count > 0)
             {
                 var bookItem = bookInfo.Items[0];
                 Book newBook = BuildBook(bookItem,isbn);
-                await  _bookServiceInstance.UpdateBook(newBook);
-                return new RequestResponse("Book updated from Google Books API", newBook); 
+                await  _bookService.UpdateBook(newBook);
+                return new RequestResponse("Book updated from Google Books API",  newBook.ToJson()); 
             }
             else
             {
-                return new RequestResponse("Google Books API Error: Not Found", null); 
+                return new RequestResponse("Google Books API Error: Not Found", null,false); 
             }
  
         }
         catch (Exception e)
         {
+            return new RequestResponse($"Google books API Error: Error while updating the book {e.Message}", null, false); 
  
-            throw;
         }
+    }
+    
+    private RequestResponse ValidateDataRequest(string isbn)
+    {
+        GoogleBooksRequest googleBooksRequest = new()
+        {
+            ISBN = isbn 
+        };
+            
+        GoogleBooksRequestValidator validator = new();
+
+        ValidationResult result = validator.Validate(googleBooksRequest);
+    
+        if (!result.IsValid)
+        {
+            string errors = JsonConvert.SerializeObject(result.Errors.Select(error => error.ErrorMessage));
+            return new RequestResponse(errors, null, false); 
+        }
+        return new RequestResponse(string.Empty, null); 
     }
 
     private Book BuildBook(BookItem book, string isbn)

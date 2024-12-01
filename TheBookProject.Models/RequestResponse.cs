@@ -4,12 +4,14 @@ namespace TheBookProject.Models;
 
 public class RequestResponse
 {
-    public string Response { get; set; }
-    public Book Book { get; set; }
+    public bool Result { get; set; }
+    public string Message { get; set; }
+    public string Book { get; set; }
 
-    public RequestResponse(string response, Book book)
+    public RequestResponse( string message, string book,bool result = true)
     {
-        Response = response;
+        Result = result;
+        Message = message;
         Book = book;
     }
 }

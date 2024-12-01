@@ -11,11 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // add the authentication / authorization services
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(defaultScheme: "Bearer").AddJwtBearer();
-
-builder.Services.AddScoped<IBookService,BookService>();
-builder.Services.AddScoped<IGoodReadsService, GoodReadsService>();
-builder.Services.AddScoped<IGoogleBooksService, GoogleBooksService>();
-
+ 
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -53,8 +49,6 @@ builder.Services.AddSwaggerGen(opt =>
 //add the app settings file 
 builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
-builder.Services.AddDbContext<TheBookProjectDbContext>(options =>
-    options.UseSqlite( builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // ADD reverse proxy
 builder.Services.AddHttpClient<IGoodReadsService, GoodReadsService>("GoodReadsAPI",client =>
@@ -67,6 +61,24 @@ builder.Services.AddHttpClient<IGoodReadsService, GoodReadsService>("GoodReadsAP
 builder.Services.AddHttpClient<IGoogleBooksService, GoogleBooksService>("GoogleBooksAPI",client =>
 {
     client.BaseAddress = new Uri("https://www.googleapis.com/"); 
+});
+
+builder.Services.AddTheBookProjectContext(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+builder.Services.AddScoped<IBookService,BookService>();
+builder.Services.AddScoped<IGoodReadsService, GoodReadsService>(provider =>
+{
+    var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
+    var dbContext = provider.GetRequiredService<TheBookProjectDbContext>();
+    var bookService = provider.GetRequiredService<IBookService>();
+    return new GoodReadsService(httpClientFactory, dbContext,bookService);
+});
+builder.Services.AddScoped<IGoogleBooksService, GoogleBooksService>(provider =>
+{
+    var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
+    var dbContext = provider.GetRequiredService<TheBookProjectDbContext>();
+    var bookService = provider.GetRequiredService<IBookService>();
+    return new GoogleBooksService(httpClientFactory, dbContext,bookService);
 });
 
 

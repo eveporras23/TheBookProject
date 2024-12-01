@@ -18,6 +18,7 @@
     <ItemGroup>
       <ProjectReference Include="..\TheBookProject.Db\TheBookProject.Db.csproj" />
       <ProjectReference Include="..\TheBookProject.Models\TheBookProject.Models.csproj" />
+      <ProjectReference Include="..\TheBookProject.Validators\TheBookProject.Validators.csproj" />
     </ItemGroup>
 
 </Project>

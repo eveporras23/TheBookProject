@@ -10,11 +10,11 @@ public class BookService : IBookService
 
     public BookService(TheBookProjectDbContext context)
     {
-        _context = context;
+        _context =  context ?? throw new ArgumentNullException(nameof(context));
     }
     public Task<List<Book>> GetAllBooks(int? page)
     {
-       return _context.Books.ToListAsync();
+       return _context.Books.Skip((page ?? 1) * 20).Take(20).ToListAsync();
     }
     public ValueTask<Book?> GetAllByIsbn(string isbn)
     {

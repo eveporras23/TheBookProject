@@ -10,27 +10,45 @@ public class GoogleBooksController : ControllerBase
 {
    
     private IGoogleBooksService _service;
+    private IBookService _bookService;
 
     public GoogleBooksController(IGoogleBooksService service)
     {
         _service = service;
     }
     
-    [HttpGet]
-    public async Task<string> Get(string isbn)
+    [HttpGet("{isbn}")]
+    public async Task<IActionResult> Get(string isbn)
     {
-        return await _service.GetBookByISBNAsync(isbn.Trim());
+        RequestResponse requestResponse =  await _service.GetBookByISBNAsync(isbn.Trim());
+        
+        if (requestResponse.Result)
+            return Ok(requestResponse);
+        else
+            return BadRequest(requestResponse);
     }
     
-    [HttpPost]
-    public async Task<RequestResponse> Post(string isbn)
+    [HttpPost("{isbn}")]
+    public async Task<IActionResult> Post(string isbn)
     {
-        return await _service.AddBookByISBNAsync(isbn.Trim());
+        RequestResponse requestResponse = await _service.AddBookByISBNAsync(isbn.Trim());
+        
+        if (requestResponse.Result)
+            return Ok(requestResponse);
+        else
+           return BadRequest(requestResponse);
+         
+     
     }
     
     [HttpPut("{isbn}")]
-    public async Task<RequestResponse> Put(string isbn)
+    public async Task<IActionResult> Put(string isbn)
     {
-        return await _service.UpdateBookByISBNAsync(isbn.Trim());
+        RequestResponse requestResponse = await _service.UpdateBookByISBNAsync(isbn.Trim());
+        
+        if (requestResponse.Result)
+            return Ok(requestResponse);
+        else
+            return BadRequest(requestResponse);
     }
 }

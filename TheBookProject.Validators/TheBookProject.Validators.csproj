@@ -7,7 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TheBookProject.Db\TheBookProject.Db.csproj" />
+      <PackageReference Include="FluentValidation" Version="11.11.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TheBookProject.Models\TheBookProject.Models.csproj" />
     </ItemGroup>
 
 </Project>

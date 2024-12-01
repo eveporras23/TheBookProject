@@ -10,7 +10,7 @@ public partial class Book
 {
     public string Tittle { get; set; } = null!;
 
-    public string Author { get; set; } = null!;
+    public string? Author { get; set; } = null!;
 
     public string? Publisher { get; set; }
 
@@ -30,4 +30,7 @@ public partial class Book
     public int? PageCount { get; set; }
 
     public string? Language { get; set; }
+    public string? URLOrigin { get; set; }
+    public double? Rating { get; set; }
+    public double? RatingCount { get; set; }
 }
