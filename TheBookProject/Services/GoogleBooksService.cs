@@ -82,7 +82,7 @@ public class GoogleBooksService : IGoogleBooksService
             if (bookInfo.Items.Count > 0)
             {
                 var bookItem = bookInfo.Items[0];
-                Book newBook = BuildBook(bookItem, isbn);
+                BookDTO newBook = BuildBook(bookItem, isbn);
                 await  _bookService.AddBook(newBook);
                 return new RequestResponse("Book added from Google Books API", newBook.ToJson()); 
             }
@@ -123,7 +123,7 @@ public class GoogleBooksService : IGoogleBooksService
             if (bookInfo.Items.Count > 0)
             {
                 var bookItem = bookInfo.Items[0];
-                Book newBook = BuildBook(bookItem,isbn);
+                BookDTO newBook = BuildBook(bookItem,isbn);
                 await  _bookService.UpdateBook(newBook);
                 return new RequestResponse("Book updated from Google Books API",  newBook.ToJson()); 
             }
@@ -159,10 +159,10 @@ public class GoogleBooksService : IGoogleBooksService
         return new RequestResponse(string.Empty, null); 
     }
 
-    private Book BuildBook(BookItem book, string isbn)
+    private BookDTO BuildBook(BookItem book, string isbn)
     {
-        Book newBook = new Book();
-        newBook.Origin = "Google Books API";
+        BookDTO newBook = new BookDTO();
+        newBook.Origin = "GOOGLE BOOKS API";
         newBook.ISBN = isbn;
         newBook.Tittle = book.VolumeInfo.Title;
         newBook.SubTittle = book.VolumeInfo.Subtitle;

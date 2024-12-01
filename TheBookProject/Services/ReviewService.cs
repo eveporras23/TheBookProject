@@ -70,6 +70,11 @@ public class ReviewService : IReviewService
     {
         return _context.Reviews.Any(e => e.Id == Id);
     }
+    
+    public bool BookExists(string isbn)
+    {
+        return _context.Books.Any(e => e.ISBN == isbn);
+    }
 
     public ValueTask<Review?> FindReview(int Id)
     {

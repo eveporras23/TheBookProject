@@ -64,6 +64,11 @@ namespace TheBookProject.Controllers
             {
                 return BadRequest(hasErrors);
             }
+            
+            if (!_reviewService.BookExists(review.ISBN))
+            {
+                return Conflict("ISBN doesn't exist");
+            }
           
             await  _reviewService.UpdateReview(review);
 
@@ -84,6 +89,11 @@ namespace TheBookProject.Controllers
             if (!string.IsNullOrEmpty(hasErrors))
             {
                 return BadRequest(hasErrors);
+            }
+            
+            if (!_reviewService.BookExists(review.ISBN))
+            {
+                return Conflict("ISBN doesn't exist");
             }
                 
             await _reviewService.AddReview(review);

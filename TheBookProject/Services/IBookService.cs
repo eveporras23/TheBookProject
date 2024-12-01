@@ -1,4 +1,5 @@
 using TheBookProject.Db.Entities;
+using TheBookProject.Models;
 
 namespace TheBookProject.Services;
 
@@ -8,9 +9,9 @@ public interface IBookService
  
     public ValueTask<Book?> GetAllByIsbn(string isbn);
 
-    public Task<bool> AddBook(Book book);
+    public Task<bool> AddBook(BookDTO book);
  
-    public Task<bool> UpdateBook(Book book);
+    public Task<bool> UpdateBook(BookDTO book);
  
     public  Task<bool> DeleteBook(Book book);
     
@@ -18,5 +19,5 @@ public interface IBookService
     
     public ValueTask<Book?> FindBook(string isbn);
     
-    public string ValidateDataRequest(Book review);
+    public string ValidateDataRequest(BookDTO review);
 }

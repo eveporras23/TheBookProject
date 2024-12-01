@@ -72,7 +72,7 @@ public class GoodReadsService : IGoodReadsService
                     return new RequestResponse("Good Reads API Error: Book already exists in the database", null, false); 
                 }
                 
-                Book newBook = BuildBook(bookInfo);
+                BookDTO newBook = BuildBook(bookInfo);
                 await  _bookService.AddBook(newBook);
                 return new RequestResponse("Book added from Good Reads API to the database",  newBook.ToJson()); 
             }
@@ -109,7 +109,7 @@ public class GoodReadsService : IGoodReadsService
                 if (_bookService.BookExists(bookInfo.details.isbn13))
                 {
                    
-                    Book newBook = BuildBook(bookInfo);
+                    BookDTO newBook = BuildBook(bookInfo);
                     await  _bookService.UpdateBook(newBook);
                     return new RequestResponse("Book updated from Good Reads API", newBook.ToJson()); 
                 }
@@ -147,7 +147,7 @@ public class GoodReadsService : IGoodReadsService
             }
                 
              
-            return new RequestResponse("Book found", responseBody); 
+            return new RequestResponse(string.Empty, responseBody); 
   
         }
         catch (Exception e)
@@ -176,10 +176,10 @@ public class GoodReadsService : IGoodReadsService
     }
     
     
-    private Book BuildBook(GoodReadsBooksResponse book)
+    private BookDTO BuildBook(GoodReadsBooksResponse book)
     {
-        Book newBook = new Book();
-        newBook.Origin = "Good Reads API";
+        BookDTO newBook = new BookDTO();
+        newBook.Origin = "GOOD READS API";
         newBook.ISBN = book.details.isbn13;
         newBook.Tittle = book.title;
         newBook.SubTittle = book.titleComplete;

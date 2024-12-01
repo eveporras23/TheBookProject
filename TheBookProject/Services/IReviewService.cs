@@ -14,7 +14,7 @@ public interface IReviewService
  
     public  Task<bool> DeleteReview(Review review);
     public bool ReviewExists(int Id);
-    
+    public bool BookExists(string isbn);
     public ValueTask<Review?> FindReview(int Id);
     public string ValidateDataRequest(ReviewDTO review);
 }

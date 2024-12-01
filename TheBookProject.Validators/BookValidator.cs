@@ -1,9 +1,9 @@
 using FluentValidation;
-using TheBookProject.Db.Entities;
+using TheBookProject.Models;
 
 namespace TheBookProject.Validators;
 
-public class BookValidator: AbstractValidator<Book>
+public class BookValidator: AbstractValidator<BookDTO>
 {
     public BookValidator()
     {
@@ -18,7 +18,7 @@ public class BookValidator: AbstractValidator<Book>
         RuleFor(book => book.Origin)
             .NotEmpty().WithMessage("Origin is required.")
             .Matches("^(MANUAL)$")
-            .WithMessage("The value must be 'MANUAL'.");
+            .WithMessage("The value Origin must be 'MANUAL'.");
  
     }
 }

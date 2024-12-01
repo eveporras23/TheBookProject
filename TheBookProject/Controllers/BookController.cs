@@ -2,11 +2,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TheBookProject.Db.Context;
 using TheBookProject.Db.Entities;
+using TheBookProject.Models;
 using TheBookProject.Services;
 
 namespace TheBookProject.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class BookController : ControllerBase
@@ -45,7 +46,7 @@ namespace TheBookProject.Controllers
         // PUT: api/Book/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{isbn}")]
-        public async Task<IActionResult> PutBook(string isbn, Book book)
+        public async Task<IActionResult> PutBook(string isbn, BookDTO book)
         {
             if (isbn.Trim() != book.ISBN)
             {
@@ -54,6 +55,12 @@ namespace TheBookProject.Controllers
             if (!_bookService.BookExists(isbn.Trim()))
             {
                 return NotFound();
+            }
+            
+            var hasErrors = _bookService.ValidateDataRequest(book);
+            if (!string.IsNullOrEmpty(hasErrors))
+            {
+                return BadRequest(hasErrors);
             }
           
             await  _bookService.UpdateBook(book);
@@ -64,16 +71,22 @@ namespace TheBookProject.Controllers
         // POST: api/Book
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Book>> PostBook(Book book)
+        public async Task<ActionResult<Book>> PostBook(BookDTO book)
         {
             if (_bookService.BookExists(book.ISBN))
             {
                 return Conflict();
             }
+            
+            var hasErrors = _bookService.ValidateDataRequest(book);
+            if (!string.IsNullOrEmpty(hasErrors))
+            {
+                return BadRequest(hasErrors);
+            }
                 
             await _bookService.AddBook(book);
 
-            return CreatedAtAction("GetBook", new { id = book.ISBN }, book);
+            return Created();
         }
 
         // DELETE: api/Book/5
