@@ -1,39 +1,31 @@
 using Microsoft.EntityFrameworkCore;
-using TheBookProject.Context;
-using TheBookProject.Entities;
+using TheBookProject.Db.Context;
+using TheBookProject.Db.Entities;
 
 namespace TheBookProject.Services;
 
-public class BookService
+public class BookService : IBookService
 {
-    private static BookService _instance;
-    private readonly TheBookProjectDbContext _context;
+   private readonly TheBookProjectDbContext _context;
 
     public BookService(TheBookProjectDbContext context)
     {
         _context = context;
     }
-
-    public static BookService Instance(TheBookProjectDbContext dbContext)
+    public Task<List<Book>> GetAllBooks(int? page)
     {
-        _instance = new BookService(dbContext);
-        return _instance;
-    }
- 
-    public Task<List<Book>> GetAllBooks()
-    {
-       return _context.Book.ToListAsync();
+       return _context.Books.ToListAsync();
     }
     public ValueTask<Book?> GetAllByIsbn(string isbn)
     {
-        return  _context.Book.FindAsync(isbn);
+        return  _context.Books.FindAsync(isbn);
     }
 
     public async Task<bool> AddBook(Book book)
     {
         if (!BookExists(book.ISBN))
         {
-            _context.Book.Add(book);
+            _context.Books.Add(book);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -53,18 +45,18 @@ public class BookService
     
     public async Task<bool> DeleteBook(Book book)
     {
-        _context.Book.Remove(book);
+        _context.Books.Remove(book);
         await _context.SaveChangesAsync();
         return true; 
     }
     
     public bool BookExists(string isbn)
     {
-        return _context.Book.Any(e => e.ISBN == isbn);
+        return _context.Books.Any(e => e.ISBN == isbn);
     }
     
     public ValueTask<Book?> FindBook(string isbn)
     {
-        return _context.Book.FindAsync(isbn);;
+        return _context.Books.FindAsync(isbn);
     }
 }

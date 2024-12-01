@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TheBookProject.Context;
-using TheBookProject.Entities;
+using TheBookProject.Db.Context;
+using TheBookProject.Db.Entities;
 using TheBookProject.Services;
 
 namespace TheBookProject.Controllers
@@ -17,22 +11,20 @@ namespace TheBookProject.Controllers
     [ApiController]
     public class BookController : ControllerBase
     {
-        private readonly TheBookProjectDbContext _context;
-        private readonly BookService _bookServiceInstance;
+         private IBookService _bookService;
 
-        public BookController(TheBookProjectDbContext context)
+        public BookController(IBookService bookService)
         {
-            _context = context;
-            _bookServiceInstance = BookService.Instance(_context);
+            _bookService = bookService;
         }
 
         // GET: api/Book
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBook()
+        public async Task<ActionResult<IEnumerable<Book>>> GetBook([FromQuery] int? page)
         {
-            
-            return await _bookServiceInstance.GetAllBooks();
+ 
+            return await _bookService.GetAllBooks(page);
         }
 
         // GET: api/Book/5
@@ -40,7 +32,7 @@ namespace TheBookProject.Controllers
         [HttpGet("{isbn}")]
         public async Task<ActionResult<Book>> GetBook(string isbn)
         {
-            var book = await _bookServiceInstance.GetAllByIsbn(isbn.Trim());
+            var book = await _bookService.GetAllByIsbn(isbn.Trim());
 
             if (book == null)
             {
@@ -59,12 +51,12 @@ namespace TheBookProject.Controllers
             {
                 return BadRequest();
             }
-            if (!_bookServiceInstance.BookExists(isbn.Trim()))
+            if (!_bookService.BookExists(isbn.Trim()))
             {
                 return NotFound();
             }
           
-            await  _bookServiceInstance.UpdateBook(book);
+            await  _bookService.UpdateBook(book);
 
             return NoContent();
         } 
@@ -74,12 +66,12 @@ namespace TheBookProject.Controllers
         [HttpPost]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
-            if (_bookServiceInstance.BookExists(book.ISBN))
+            if (_bookService.BookExists(book.ISBN))
             {
                 return Conflict();
             }
                 
-            await _bookServiceInstance.AddBook(book);
+            await _bookService.AddBook(book);
 
             return CreatedAtAction("GetBook", new { id = book.ISBN }, book);
         }
@@ -89,14 +81,14 @@ namespace TheBookProject.Controllers
         public async Task<IActionResult> DeleteBook(string isbn)
         {
            
-            Book? book = await _bookServiceInstance.FindBook(isbn.Trim());
+            Book? book = await _bookService.FindBook(isbn.Trim());
            
             if (book == null)
             {
                 return NotFound();
             }
         
-            await _bookServiceInstance.DeleteBook(book);
+            await _bookService.DeleteBook(book);
             
             return NoContent();
         }

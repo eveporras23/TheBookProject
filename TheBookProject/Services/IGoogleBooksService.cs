@@ -6,6 +6,6 @@ public interface IGoogleBooksService
 {
     Task<string> GetBookByISBNAsync(string isbn);
 
-    Task<ResultRequest> AddBookByISBNAsync(string isbn);
-    Task<ResultRequest> UpdateBookByISBNAsync(string isbn);
+    Task<RequestResponse> AddBookByISBNAsync(string isbn);
+    Task<RequestResponse> UpdateBookByISBNAsync(string isbn);
 }

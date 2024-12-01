@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http.Headers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using TheBookProject.Context;
+using TheBookProject.Db.Context;
 using TheBookProject.Middlewares;
 using TheBookProject.Services;
 
@@ -11,11 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(defaultScheme: "Bearer").AddJwtBearer();
 
-// add dbcontext
-builder.Services.AddDbContext<TheBookProjectDbContext>();
+builder.Services.AddScoped<IBookService,BookService>();
+builder.Services.AddScoped<IGoodReadsService, GoodReadsService>();
+builder.Services.AddScoped<IGoogleBooksService, GoogleBooksService>();
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -48,16 +49,19 @@ builder.Services.AddSwaggerGen(opt =>
     });
 });
 
+
 //add the app settings file 
 builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
+builder.Services.AddDbContext<TheBookProjectDbContext>(options =>
+    options.UseSqlite( builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// ADD API
+// ADD reverse proxy
 builder.Services.AddHttpClient<IGoodReadsService, GoodReadsService>("GoodReadsAPI",client =>
 {
     client.BaseAddress = new Uri("https://goodreads12.p.rapidapi.com"); 
-    client.DefaultRequestHeaders.Add("x-rapidapi-key", "cecc827dbbmsh879fc314bc7573fp16bf4fjsn0d4917e5d591");
-    client.DefaultRequestHeaders.Add("x-rapidapi-host", "goodreads12.p.rapidapi.com");
+    client.DefaultRequestHeaders.Add("x-rapidapi-key", builder.Configuration.GetValue<string>("APIKeys:GoodReads"));
+    client.DefaultRequestHeaders.Add("x-rapidapi-host", builder.Configuration.GetValue<string>("APIHost:GoodReads"));
 });
 
 builder.Services.AddHttpClient<IGoogleBooksService, GoogleBooksService>("GoogleBooksAPI",client =>
@@ -65,8 +69,6 @@ builder.Services.AddHttpClient<IGoogleBooksService, GoogleBooksService>("GoogleB
     client.BaseAddress = new Uri("https://www.googleapis.com/"); 
 });
 
-builder.Services.AddScoped<IGoodReadsService, GoodReadsService>();
-builder.Services.AddScoped<IGoogleBooksService, GoogleBooksService>();
 
 var app = builder.Build();
 
