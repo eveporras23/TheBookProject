@@ -18,5 +18,5 @@ public interface IBookService
     
     public ValueTask<Book?> FindBook(string isbn);
     
- 
+    public string ValidateDataRequest(Book review);
 }

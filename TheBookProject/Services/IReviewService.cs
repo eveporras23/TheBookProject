@@ -15,4 +15,5 @@ public interface IReviewService
     public bool ReviewExists(int Id);
     
     public ValueTask<Review?> FindReview(int Id);
+    public string ValidateDataRequest(Review review);
 }

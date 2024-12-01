@@ -1,6 +1,9 @@
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using TheBookProject.Db.Context;
 using TheBookProject.Db.Entities;
+using TheBookProject.Validators;
 
 namespace TheBookProject.Services;
 
@@ -58,5 +61,20 @@ public class BookService : IBookService
     public ValueTask<Book?> FindBook(string isbn)
     {
         return _context.Books.FindAsync(isbn);
+    }
+    
+    public string ValidateDataRequest(Book book)
+    {
+       
+        BookValidator validator = new();
+
+        ValidationResult result = validator.Validate(book);
+    
+        if (!result.IsValid)
+        {
+            string errors = JsonConvert.SerializeObject(result.Errors.Select(error => error.ErrorMessage));
+            return errors; 
+        }
+        return string.Empty; 
     }
 }

@@ -1,6 +1,9 @@
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using TheBookProject.Db.Context;
 using TheBookProject.Db.Entities;
+using TheBookProject.Validators;
 
 namespace TheBookProject.Services;
 
@@ -56,5 +59,20 @@ public class ReviewService : IReviewService
     public ValueTask<Review?> FindReview(int Id)
     {
         return _context.Reviews.FindAsync(Id);
+    }
+    
+    public string ValidateDataRequest(Review review)
+    {
+       
+        ReviewValidator validator = new();
+
+        ValidationResult result = validator.Validate(review);
+    
+        if (!result.IsValid)
+        {
+            string errors = JsonConvert.SerializeObject(result.Errors.Select(error => error.ErrorMessage));
+            return errors; 
+        }
+        return string.Empty; 
     }
 }

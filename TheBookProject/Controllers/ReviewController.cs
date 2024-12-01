@@ -57,6 +57,12 @@ namespace TheBookProject.Controllers
             {
                 return NotFound();
             }
+
+            var hasErrors = _reviewService.ValidateDataRequest(review);
+            if (!string.IsNullOrEmpty(hasErrors))
+            {
+                return BadRequest(hasErrors);
+            }
           
             await  _reviewService.UpdateReview(review);
 
@@ -71,6 +77,12 @@ namespace TheBookProject.Controllers
             if (_reviewService.ReviewExists(review.Id))
             {
                 return Conflict();
+            }
+            
+            var hasErrors = _reviewService.ValidateDataRequest(review);
+            if (!string.IsNullOrEmpty(hasErrors))
+            {
+                return BadRequest(hasErrors);
             }
                 
             await _reviewService.AddReview(review);
