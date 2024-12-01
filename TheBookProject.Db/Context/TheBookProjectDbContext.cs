@@ -22,6 +22,12 @@ public partial class TheBookProjectDbContext : DbContext
  
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Book>()
+            .HasMany(b => b.Reviews)  
+            .WithOne(p => p.ISBNNavigation)  
+            .HasForeignKey(p => p.ISBN) 
+            .OnDelete(DeleteBehavior.ClientCascade); 
+        
         modelBuilder.Entity<Review>(entity =>
         {
             entity.HasOne(d => d.ISBNNavigation).WithMany(p => p.Reviews).OnDelete(DeleteBehavior.ClientSetNull);

@@ -27,13 +27,7 @@ public class ReviewService : IReviewService
     {
         if (!ReviewExists(reviewDto.Id))
         {
-            Review review = new Review();
-            review.ISBN = reviewDto.ISBN;
-            review.Origin = reviewDto.Origin;
-            review.Text = reviewDto.Text;
-            review.Rating = reviewDto.Rating;
-            
-            _context.Reviews.Add(review);
+            _context.Reviews.Add(BuildReview(reviewDto));
             await _context.SaveChangesAsync();
             return true;
         }
@@ -44,14 +38,9 @@ public class ReviewService : IReviewService
     {
         if (ReviewExists(reviewDto.Id))
         {
-            Review review = new Review();
-            review.Id = reviewDto.Id;
-            review.ISBN = reviewDto.ISBN;
-            review.Origin = reviewDto.Origin;
-            review.Text = reviewDto.Text;
-            review.Rating = reviewDto.Rating;
+           
             
-            _context.Entry(review).State = EntityState.Modified;
+            _context.Entry(BuildReview(reviewDto)).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return true;
         }
@@ -94,5 +83,16 @@ public class ReviewService : IReviewService
             return errors; 
         }
         return string.Empty; 
+    }
+    
+    private Review BuildReview(ReviewDTO reviewDto)
+    {
+        Review review = new Review();
+        review.Id = reviewDto.Id;
+        review.ISBN = reviewDto.ISBN;
+        review.Origin = reviewDto.Origin;
+        review.Text = reviewDto.Text;
+        review.Rating = reviewDto.Rating;
+        return review;
     }
 }

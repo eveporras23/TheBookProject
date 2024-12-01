@@ -54,9 +54,14 @@ public class BookService : IBookService
     
     public async Task<bool> DeleteBook(Book book)
     {
-        _context.Books.Remove(book);
-        await _context.SaveChangesAsync();
-        return true; 
+        Book? bookToDelete = await _context.Books.Include(b => b.Reviews).FirstOrDefaultAsync(b => b.ISBN == book.ISBN);
+        if (bookToDelete != null)
+        {
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();  
+            return true; 
+        }
+       return false; 
     }
     
     public bool BookExists(string isbn)

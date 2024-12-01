@@ -6,6 +6,7 @@ using TheBookProject.Db.Entities;
 using TheBookProject.Helpers;
 using TheBookProject.Models;
 using TheBookProject.Validators;
+using Review = TheBookProject.Models.Review;
 
 namespace TheBookProject.Services;
 
@@ -72,7 +73,7 @@ public class GoodReadsService : IGoodReadsService
                     return new RequestResponse("Good Reads API Error: Book already exists in the database", null, false); 
                 }
                 
-                BookDTO newBook = BuildBook(bookInfo);
+                BookDTO newBook = BuildBook(bookInfo, "Add");
                 await  _bookService.AddBook(newBook);
                 return new RequestResponse("Book added from Good Reads API to the database",  newBook.ToJson()); 
             }
@@ -109,7 +110,7 @@ public class GoodReadsService : IGoodReadsService
                 if (_bookService.BookExists(bookInfo.details.isbn13))
                 {
                    
-                    BookDTO newBook = BuildBook(bookInfo);
+                    BookDTO newBook = BuildBook(bookInfo, "Update");
                     await  _bookService.UpdateBook(newBook);
                     return new RequestResponse("Book updated from Good Reads API", newBook.ToJson()); 
                 }
@@ -176,7 +177,7 @@ public class GoodReadsService : IGoodReadsService
     }
     
     
-    private BookDTO BuildBook(GoodReadsBooksResponse book)
+    private BookDTO BuildBook(GoodReadsBooksResponse book, string action)
     {
         BookDTO newBook = new BookDTO();
         newBook.Origin = "GOOD READS API";
@@ -188,8 +189,25 @@ public class GoodReadsService : IGoodReadsService
         newBook.PageCount = book.details.numPages;
         newBook.Rating = book.stats.averageRating;
         newBook.RatingCount = book.stats.ratingsCount;
-        
+    
+        if (action == "Add") 
+        {
+            if (book.reviews != null && book.reviews.Count > 0)
+            {
+                foreach (Review review in book.reviews)
+                {
+                    ReviewDTO newReview = new ReviewDTO();
+                    newReview.ISBN = newBook.ISBN;
+                    newReview.Rating = review.rating;
+                    newReview.Origin = newBook.Origin;
+                    newReview.Text = review.text;
+
+                    _reviewService.AddReview(newReview);
+                }
+            }
+        }
         return newBook;
+        
     }
  
     

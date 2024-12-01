@@ -1,0 +1,238 @@
+{
+	"info": {
+		"_postman_id": "f27b9f26-692f-4cde-a6bd-14b96da903fa",
+		"name": "TheBookProject",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "412557"
+	},
+	"item": [
+		{
+			"name": "/api/Book",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "/api/Book/{isbn}",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "/api/Book/",
+			"request": {
+				"method": "POST",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "/api/Book/{isbn}",
+			"request": {
+				"method": "PUT",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "/api/Book/{isbn}",
+			"request": {
+				"method": "DELETE",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "/api/Review",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "/api/Review/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5157/api/Review/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5157",
+					"path": [
+						"api",
+						"Review",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/Review/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"isbn\": \"1111111111111\",\r\n\"text\": \"VAMOS VAMOS Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vel tortor ut arcu ornare gravida vel pulvinar quam. Nullam malesuada tempus justo, sit amet lobortis lorem maximus in. Nullam eget diam mauris. Mauris tincidunt elit in nibh elementum consequat. Nunc urna nunc, commodo et varius non, pulvinar non lacus. Maecenas euismod viverra tortor, vitae pellentesque diam suscipit vel. Phasellus ultrices mattis convallis. Sed porttitor ultrices convallis. Etiam quis elementum dolor. Duis sapien lectus, euismod ac luctus sed, elementum at mi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Mauris fringilla nec nisi facilisis auctor. Donec gravida blandit nunc.\",\r\n\"origin\": \"MANUAL\",\r\n\"rating\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5157/api/Review/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5157",
+					"path": [
+						"api",
+						"Review",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/Review/{id}",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5157/api/Review/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5157",
+					"path": [
+						"api",
+						"Review",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/Review/{id}",
+			"request": {
+				"method": "DELETE",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "/api/GoogleBooks/{isbn}",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "/api/GoogleBooks/{isbn}",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5157/api/GoogleBooks/9781643757087",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5157",
+					"path": [
+						"api",
+						"GoogleBooks",
+						"9781643757087"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/GoogleBooks/{isbn}",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5157/api/GoogleBooks/9780063321458 ",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5157",
+					"path": [
+						"api",
+						"GoogleBooks",
+						"9780063321458 "
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/GoodReads/{bookId}",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "/api/GoodReads/{bookId}",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5157/api/GoodReads/211350368",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5157",
+					"path": [
+						"api",
+						"GoodReads",
+						"211350368"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/GoodReads/{bookId}",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5157/api/GoodReads/211350368",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5157",
+					"path": [
+						"api",
+						"GoodReads",
+						"211350368"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
