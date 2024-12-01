@@ -1,5 +1,23 @@
+# Ignore JetBrains IDE settings
+.idea/
+
+# Ignore Visual Studio settings
+.vs/
+
+# Ignore build results
 bin/
 obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
+
+# User-specific files
+*.user
+*.suo
+
+# Backup & log files
+*.log
+*.bak
+*.swp
+
+# Other IDE-specific files
+*.ncb
+*.opendb
+*.VC.db
