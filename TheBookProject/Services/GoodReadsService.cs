@@ -25,16 +25,16 @@ public class GoodReadsService : IGoodReadsService
         _bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
     }
 
-    public async Task<RequestResponse> GetBookByURLAsync(string bookURL)
+    public async Task<RequestResponse> GetBookByURLAsync(string bookId)
     {
         try
         {
            
-            var isDataValid = ValidateDataRequest(bookURL);
+            var isDataValid = ValidateDataRequest(bookId);
           
             if (!isDataValid.Result) return isDataValid;
  
-            return await GetBookFromReverseProxy(new GoodReadsRequest(){ BookUrl = bookURL }); 
+            return await GetBookFromReverseProxy(new GoodReadsRequest(){ BookId = bookId }); 
         }
         catch (Exception e)
         {
@@ -44,15 +44,15 @@ public class GoodReadsService : IGoodReadsService
     }
  
     
-    public async Task<RequestResponse> AddBookByURLAsync(string bookURL)
+    public async Task<RequestResponse> AddBookByURLAsync(string bookId)
     {
         try
         {
-            var isDataValid = ValidateDataRequest(bookURL);
+            var isDataValid = ValidateDataRequest(bookId);
           
             if (!isDataValid.Result) return isDataValid;
  
-            RequestResponse requestResponse = await GetBookFromReverseProxy(new GoodReadsRequest(){ BookUrl = bookURL }); 
+            RequestResponse requestResponse = await GetBookFromReverseProxy(new GoodReadsRequest(){ BookId = bookId }); 
             
             if (!requestResponse.Result) return requestResponse;
  
@@ -71,7 +71,7 @@ public class GoodReadsService : IGoodReadsService
                     return new RequestResponse("Good Reads API Error: Book already exists in the database", null, false); 
                 }
                 
-                Book newBook = BuildBook(bookInfo, bookInfo.details.isbn13, bookURL);
+                Book newBook = BuildBook(bookInfo, bookInfo.details.isbn13, bookId);
                 await  _bookService.AddBook(newBook);
                 return new RequestResponse("Book added from Good Reads API to the database",  newBook.ToJson()); 
             }
@@ -83,15 +83,15 @@ public class GoodReadsService : IGoodReadsService
         }
     }
 
-    public async Task<RequestResponse> UpdateBookByURLAsync(string bookURL)
+    public async Task<RequestResponse> UpdateBookByURLAsync(string bookId)
     {
         try
         {
-            var isDataValid = ValidateDataRequest(bookURL);
+            var isDataValid = ValidateDataRequest(bookId);
           
             if (!isDataValid.Result) return isDataValid;
  
-            RequestResponse requestResponse = await GetBookFromReverseProxy(new GoodReadsRequest(){ BookUrl = bookURL }); 
+            RequestResponse requestResponse = await GetBookFromReverseProxy(new GoodReadsRequest(){ BookId = bookId }); 
             
             if (!requestResponse.Result) return requestResponse;
  
@@ -108,7 +108,7 @@ public class GoodReadsService : IGoodReadsService
                 if (_bookService.BookExists(bookInfo.details.isbn13))
                 {
                    
-                    Book newBook = BuildBook(bookInfo,bookInfo.details.isbn13, bookURL);
+                    Book newBook = BuildBook(bookInfo,bookInfo.details.isbn13, bookId);
                     await  _bookService.UpdateBook(newBook);
                     return new RequestResponse("Book updated from Good Reads API", newBook.ToJson()); 
                 }
@@ -130,13 +130,11 @@ public class GoodReadsService : IGoodReadsService
     {
         try
         {
-
-            string goodReadsBookURLConverted = URIConverter.ConvertToString(goodReadsRequest.BookUrl);
-                
+      
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{_httpClient.BaseAddress}getBookByURL?url={goodReadsBookURLConverted}"),
+                RequestUri = new Uri($"{_httpClient.BaseAddress}getBookByID?bookID={goodReadsRequest.BookId}"),
             };
                 
             var responseBody = string.Empty; 
@@ -157,11 +155,11 @@ public class GoodReadsService : IGoodReadsService
         }
     }
 
-    private RequestResponse ValidateDataRequest(string bookUrl)
+    private RequestResponse ValidateDataRequest(string bookId)
     {
         GoodReadsRequest goodReadsrequest = new()
         {
-            BookUrl = bookUrl 
+            BookId = bookId 
         };
             
         GoodReadsRequestValidator validator = new();
@@ -182,7 +180,6 @@ public class GoodReadsService : IGoodReadsService
         Book newBook = new Book();
         newBook.Origin = "Good Reads API";
         newBook.ISBN = book.details.isbn13;
-        newBook.URLOrigin = bookUrl;
         newBook.Tittle = book.title;
         newBook.SubTittle = book.titleComplete;
         newBook.Publisher = book.details.publisher;

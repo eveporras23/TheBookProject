@@ -30,7 +30,7 @@ public partial class Book
     public int? PageCount { get; set; }
 
     public string? Language { get; set; }
-    public string? URLOrigin { get; set; }
+   
     public double? Rating { get; set; }
     public double? RatingCount { get; set; }
 }

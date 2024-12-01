@@ -2,5 +2,5 @@ namespace TheBookProject.Models;
 
 public class GoodReadsRequest
 {
-    public string BookUrl { get; set; }
+    public string BookId { get; set; }
 }

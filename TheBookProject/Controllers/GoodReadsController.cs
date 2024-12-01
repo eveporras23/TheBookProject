@@ -17,10 +17,10 @@ public class GoodReadsController : ControllerBase
         _service = service;
     }
     
-    [HttpGet("{bookURL}")]
-    public async  Task<IActionResult> Get(string bookURL)
+    [HttpGet("{bookId}")]
+    public async  Task<IActionResult> Get(string bookId)
     {
-       RequestResponse requestResponse =  await _service.GetBookByURLAsync(bookURL.Trim());
+       RequestResponse requestResponse =  await _service.GetBookByURLAsync(bookId.Trim());
         
         if (requestResponse.Result)
             return Ok(requestResponse);
@@ -29,11 +29,11 @@ public class GoodReadsController : ControllerBase
     }
     
         
-    [HttpPost("{bookURL}")]
-    public async  Task<IActionResult> Post(string bookURL)
+    [HttpPost("{bookId}")]
+    public async  Task<IActionResult> Post(string bookId)
     {
  
-        RequestResponse requestResponse =   await _service.AddBookByURLAsync(bookURL.Trim());
+        RequestResponse requestResponse =   await _service.AddBookByURLAsync(bookId.Trim());
         
         if (requestResponse.Result)
             return Ok(requestResponse);
@@ -41,10 +41,10 @@ public class GoodReadsController : ControllerBase
             return BadRequest(requestResponse);
     }
     
-    [HttpPut("{bookURL}")]
-    public async  Task<IActionResult> Put(string bookURL)
+    [HttpPut("{bookId}")]
+    public async  Task<IActionResult> Put(string bookId)
     {
-        RequestResponse requestResponse = await _service.UpdateBookByURLAsync(bookURL.Trim());
+        RequestResponse requestResponse = await _service.UpdateBookByURLAsync(bookId.Trim());
         
         if (requestResponse.Result)
             return Ok(requestResponse);

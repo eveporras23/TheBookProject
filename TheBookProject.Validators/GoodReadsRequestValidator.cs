@@ -9,10 +9,9 @@ public class GoodReadsRequestValidator: AbstractValidator<GoodReadsRequest>
     public GoodReadsRequestValidator()
     {
  
-        RuleFor(request => request.BookUrl)
+        RuleFor(request => request.BookId)
             .NotEmpty().WithMessage("Goood Reads Book URL is required.")
-            //.Matches(@"^https:\/\/www\.goodreads\.com\/book\/show\/\d+-[a-z0-9-]+$", RegexOptions.IgnoreCase)
-            .WithMessage("Goodreads URL must follow the pattern 'https://www.goodreads.com/book/show/{id}-{slug}'.");
-      
+            .Matches(@"^\d$").WithMessage("Goodreads Book Id must be a number.");
+  
     }
 }
