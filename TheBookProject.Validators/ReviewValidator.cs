@@ -1,9 +1,9 @@
 using FluentValidation;
-using TheBookProject.Db.Entities;
+using TheBookProject.Models;
 
 namespace TheBookProject.Validators;
 
-public class ReviewValidator: AbstractValidator<Review>
+public class ReviewValidator: AbstractValidator<ReviewDTO>
 {
     public ReviewValidator()
     {
@@ -14,11 +14,11 @@ public class ReviewValidator: AbstractValidator<Review>
         RuleFor(review => review.Origin)
             .NotEmpty().WithMessage("Origin is required.")
             .Matches("^(MANUAL|GOOD READS)$")
-            .WithMessage("The value must be 'MANUAL' or 'GOOD READS'.");
+            .WithMessage("The value Origin must be 'MANUAL' or 'GOOD READS'.");
         RuleFor(review => review.Text)
             .NotEmpty().WithMessage("Text is required.")
             .Must(HaveMoreThan100Words)
-            .WithMessage("The content must contain exactly 100 words.");
+            .WithMessage("The Text must contain at least 100 words.");
         RuleFor(review => review.Rating)
             .NotEmpty().WithMessage("Rating is required.")
             .Must(rating => rating.Value <= 5 && rating.Value >= 0)

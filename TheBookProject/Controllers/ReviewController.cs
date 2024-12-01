@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TheBookProject.Db.Context;
-using TheBookProject.Db.Entities;
+using TheBookProject.Models;
 using TheBookProject.Services;
+using Review = TheBookProject.Db.Entities.Review;
 
 namespace TheBookProject.Controllers
 {
@@ -46,7 +47,7 @@ namespace TheBookProject.Controllers
         // PUT: api/Review/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutReview(int id, Review review)
+        public async Task<IActionResult> PutReview(int id, ReviewDTO review)
         {
             if (id != review.Id)
             {
@@ -72,7 +73,7 @@ namespace TheBookProject.Controllers
         // POST: api/Review
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Review>> PostReview(Review review)
+        public async Task<ActionResult<Review>> PostReview(ReviewDTO review)
         {
             if (_reviewService.ReviewExists(review.Id))
             {
@@ -87,7 +88,7 @@ namespace TheBookProject.Controllers
                 
             await _reviewService.AddReview(review);
 
-            return CreatedAtAction("GetReview", new { id = review.Id }, review);
+            return Created();
         }
 
         // DELETE: api/Review/5

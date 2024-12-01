@@ -2,8 +2,9 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using TheBookProject.Db.Context;
-using TheBookProject.Db.Entities;
+using TheBookProject.Models;
 using TheBookProject.Validators;
+using Review = TheBookProject.Db.Entities.Review;
 
 namespace TheBookProject.Services;
 
@@ -22,10 +23,16 @@ public class ReviewService : IReviewService
         return _context.Reviews.Where(r=> r.ISBN== isbn).Skip((page ?? 1) * 20).Take(20).ToListAsync();
     }
 
-    public async Task<bool> AddReview(Review review)
+    public async Task<bool> AddReview(ReviewDTO reviewDto)
     {
-        if (!ReviewExists(review.Id))
+        if (!ReviewExists(reviewDto.Id))
         {
+            Review review = new Review();
+            review.ISBN = reviewDto.ISBN;
+            review.Origin = reviewDto.Origin;
+            review.Text = reviewDto.Text;
+            review.Rating = reviewDto.Rating;
+            
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
             return true;
@@ -33,10 +40,17 @@ public class ReviewService : IReviewService
         return false;
     }
 
-    public async Task<bool> UpdateReview(Review review)
+    public async Task<bool> UpdateReview(ReviewDTO reviewDto)
     {
-        if (ReviewExists(review.Id))
+        if (ReviewExists(reviewDto.Id))
         {
+            Review review = new Review();
+            review.Id = reviewDto.Id;
+            review.ISBN = reviewDto.ISBN;
+            review.Origin = reviewDto.Origin;
+            review.Text = reviewDto.Text;
+            review.Rating = reviewDto.Rating;
+            
             _context.Entry(review).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return true;
@@ -46,6 +60,7 @@ public class ReviewService : IReviewService
 
     public async Task<bool> DeleteReview(Review review)
     {
+    
         _context.Reviews.Remove(review);
         await _context.SaveChangesAsync();
         return true; 
@@ -61,12 +76,12 @@ public class ReviewService : IReviewService
         return _context.Reviews.FindAsync(Id);
     }
     
-    public string ValidateDataRequest(Review review)
+    public string ValidateDataRequest(ReviewDTO reviewDto)
     {
        
         ReviewValidator validator = new();
 
-        ValidationResult result = validator.Validate(review);
+        ValidationResult result = validator.Validate(reviewDto);
     
         if (!result.IsValid)
         {
