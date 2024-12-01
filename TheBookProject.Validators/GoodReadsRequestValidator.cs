@@ -11,7 +11,7 @@ public class GoodReadsRequestValidator: AbstractValidator<GoodReadsRequest>
  
         RuleFor(request => request.BookId)
             .NotEmpty().WithMessage("Goood Reads Book URL is required.")
-            .Matches(@"^\d$").WithMessage("Goodreads Book Id must be a number.");
+            .Matches(@"^[0-9]*$").WithMessage("Goodreads Book Id must be a number.");
   
     }
 }

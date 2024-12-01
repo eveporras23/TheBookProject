@@ -17,10 +17,16 @@ public partial class TheBookProjectDbContext : DbContext
     }
 
     public virtual DbSet<Book> Books { get; set; }
-    
-  
+
+    public virtual DbSet<Review> Reviews { get; set; }
+ 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Review>(entity =>
+        {
+            entity.HasOne(d => d.ISBNNavigation).WithMany(p => p.Reviews).OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
         OnModelCreatingPartial(modelBuilder);
     }
 

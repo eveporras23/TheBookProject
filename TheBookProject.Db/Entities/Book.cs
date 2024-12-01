@@ -10,7 +10,7 @@ public partial class Book
 {
     public string Tittle { get; set; } = null!;
 
-    public string? Author { get; set; } = null!;
+    public string? Author { get; set; }
 
     public string? Publisher { get; set; }
 
@@ -30,7 +30,11 @@ public partial class Book
     public int? PageCount { get; set; }
 
     public string? Language { get; set; }
-   
+
     public double? Rating { get; set; }
+
     public double? RatingCount { get; set; }
+
+    [InverseProperty("ISBNNavigation")]
+    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 }
