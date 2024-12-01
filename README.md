@@ -1,5 +1,3 @@
-Here is a suggested README file for the `TheBookProject`:
-
 # TheBookProject
 
 ## Overview
