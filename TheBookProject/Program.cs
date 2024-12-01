@@ -66,12 +66,14 @@ builder.Services.AddHttpClient<IGoogleBooksService, GoogleBooksService>("GoogleB
 builder.Services.AddTheBookProjectContext(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 builder.Services.AddScoped<IBookService,BookService>();
+builder.Services.AddScoped<IReviewService,ReviewService>();
 builder.Services.AddScoped<IGoodReadsService, GoodReadsService>(provider =>
 {
     var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
     var dbContext = provider.GetRequiredService<TheBookProjectDbContext>();
     var bookService = provider.GetRequiredService<IBookService>();
-    return new GoodReadsService(httpClientFactory, dbContext,bookService);
+    var reviewService = provider.GetRequiredService<IReviewService>();
+    return new GoodReadsService(httpClientFactory, dbContext,bookService, reviewService);
 });
 builder.Services.AddScoped<IGoogleBooksService, GoogleBooksService>(provider =>
 {

@@ -13,11 +13,11 @@ public partial class Review
 
     public string ISBN { get; set; } = null!;
 
-    public int? Text { get; set; }
+    public string? Text { get; set; }
 
     public string? Origin { get; set; }
 
-    public int? Rating { get; set; }
+    public double? Rating { get; set; }
 
     [ForeignKey("ISBN")]
     [InverseProperty("Reviews")]

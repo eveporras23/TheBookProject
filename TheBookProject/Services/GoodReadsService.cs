@@ -15,14 +15,15 @@ public class GoodReadsService : IGoodReadsService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly TheBookProjectDbContext _context;
     private readonly IBookService _bookService;
-
+    private readonly IReviewService _reviewService;
  
-    public GoodReadsService(IHttpClientFactory httpClientFactory, TheBookProjectDbContext context, IBookService bookService)
+    public GoodReadsService(IHttpClientFactory httpClientFactory, TheBookProjectDbContext context, IBookService bookService, IReviewService reviewService)
     {
          _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         _httpClient = httpClientFactory.CreateClient("GoodReadsAPI");
         _context= context ?? throw new ArgumentNullException(nameof(context));
         _bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
+        _reviewService = reviewService ?? throw new ArgumentNullException(nameof(reviewService));
     }
 
     public async Task<RequestResponse> GetBookByURLAsync(string bookId)
