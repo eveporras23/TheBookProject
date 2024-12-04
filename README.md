@@ -49,17 +49,18 @@ TheBookProject is a project designed to manage and interact with book data. It l
 ### Configuration
 
 - Configure the connection string in `appsettings.json`:
-  `json
+  ```json
   {
     "ConnectionStrings": {
       "DefaultConnection": "Data Source=identifier.sqlite"
     }
   }
-  `
+  ```
+  
   **NOTE** inside TheBookProject.Db project folder there is an example of the database `TheBookProject.sqlite`
 
 - Add API keys for GoodReads API in `appsettings.json`:
-  `json
+  ```json
   {
     "APIKeys": {
       "GoodReads": "your_goodreads_api_key"
@@ -68,7 +69,7 @@ TheBookProject is a project designed to manage and interact with book data. It l
       "GoodReads": "your_goodreads_api_host"
     }
   }
-  `
+   ```
   **NOTE** To get a Good reads API host and Key, you can go to website `https://rapidapi.com/UnitedAPI/api/goodreads12/playground`, login is needed.
 
 ## Usage
@@ -80,37 +81,35 @@ If prefer, the repository has a **POSTMAN collection** `TheBookProject.postman_c
 [AllowAnonymous]
 
 - **GET** `/api/books`: Retrieve a list of all books.
-  [AllowAnonymous]
+   AllowAnonymous 
 - **GET** `/api/books/{isbn}`: Retrieve details of a book by ISBN.
-  [Authorize]
+   Authorize 
 - **POST** `/api/books`: Add a new book.
-  [Authorize]
+   Authorize 
 - **PUT** `/api/books/{isbn}`: Update an existing book.
-  [Authorize]
+  Authorize 
 - **DELETE** `/api/books/{isbn}`: Delete a book.
 
   **REVIEWS**
 
-[AllowAnonymous]
-
+ AllowAnonymous 
 - **GET** `/api/review`: Retrieve a list of all reviews for a book by ISBN.
-  [AllowAnonymous]
+  AllowAnonymous 
 - **GET** `/api/review/{id}`: Retrieve details of a review by ID.
-  [Authorize]
+  Authorize 
 - **POST** `/api/review`: Add a new review.
-  [Authorize]
+  Authorize 
 - **PUT** `/api/review/{id}`: Update an existing review.
-  [Authorize]
+   Authorize 
 - **DELETE** `/api/review/{id}`: Delete a review.
 
   **USING GOOGLE BOOKS REVERSE PROXY**
 
-[AllowAnonymous]
-
+ AllowAnonymous 
 - **GET** `/api/GoogleBooks/{isbn}`: Retrieve information about a book by ISBN from Google books API.
-  [Authorize]
+   Authorize 
 - **POST** `/api/GoogleBooks/{isbn}`: Retrieve information about a book by ISBN and add the new book, if doesn't exist in the database.
-  [Authorize]
+   Authorize 
 - **PUT** `/api/GoogleBooks/{isbn}`: Retrieve information about a book by ISBN and update the book, if exists in the database.
 
   **USING GOOD READS REVERSE PROXY**
@@ -127,7 +126,7 @@ To get the book Id of the Good reads books, go to website `https://www.goodreads
 
 **Note:** The options with [Authorize] needs a jwts token to get one, open the terminal in the TheBookProject/TheBookProject project and execute the command:
 
-`dotnet user-jwts create --claim "LastName=Porras"`
+  ```dotnet user-jwts create --claim "LastName=Porras"  ```
 
 Copy and paste the token in a notepad to remove any space, copy and use it on swagger directly or in POSTMAN.
 
