@@ -78,15 +78,18 @@ If prefer, the repository has a **POSTMAN collection** `TheBookProject.postman_c
 
 **BOOKS**
 
-[AllowAnonymous]
-
+AllowAnonymous
 - **GET** `/api/books`: Retrieve a list of all books.
+  
    AllowAnonymous 
 - **GET** `/api/books/{isbn}`: Retrieve details of a book by ISBN.
+  
    Authorize 
 - **POST** `/api/books`: Add a new book.
+  
    Authorize 
 - **PUT** `/api/books/{isbn}`: Update an existing book.
+  
   Authorize 
 - **DELETE** `/api/books/{isbn}`: Delete a book.
 
@@ -94,35 +97,45 @@ If prefer, the repository has a **POSTMAN collection** `TheBookProject.postman_c
 
  AllowAnonymous 
 - **GET** `/api/review`: Retrieve a list of all reviews for a book by ISBN.
+  
   AllowAnonymous 
 - **GET** `/api/review/{id}`: Retrieve details of a review by ID.
+  
   Authorize 
 - **POST** `/api/review`: Add a new review.
+  
   Authorize 
 - **PUT** `/api/review/{id}`: Update an existing review.
+
    Authorize 
 - **DELETE** `/api/review/{id}`: Delete a review.
+  
 
   **USING GOOGLE BOOKS REVERSE PROXY**
 
  AllowAnonymous 
 - **GET** `/api/GoogleBooks/{isbn}`: Retrieve information about a book by ISBN from Google books API.
+  
    Authorize 
 - **POST** `/api/GoogleBooks/{isbn}`: Retrieve information about a book by ISBN and add the new book, if doesn't exist in the database.
+  
    Authorize 
 - **PUT** `/api/GoogleBooks/{isbn}`: Retrieve information about a book by ISBN and update the book, if exists in the database.
+  
 
   **USING GOOD READS REVERSE PROXY**
 
 To get the book Id of the Good reads books, go to website `https://www.goodreads.com/`, select a book from thousend of options for example `https://www.goodreads.com/book/show/7094569-feed`- The book id is **7094569**. Another example is `https://www.goodreads.com/book/show/199531723-the-author-s-guide-to-murder` the book Id is **199531723**
 
 [AllowAnonymous]
-
-- **GET** `/api/GoodReads/{bookId}`: Retrieve information about a book by book Id from Google good reads API.
+- **GET** `/api/GoodReads/{bookId}`: Retrieve information about a book by book Id from Good reads API.
+  
   [Authorize]
 - **POST** `/api/GoodReads/{bookId}`: Retrieve information about a book by book Id and add the new book if the retrieve data has an ISBN of 13 digits and if the book data has reviews add them in the database too.
+  
   [Authorize]
 - **PUT** `/api/GoodReads/{bookId}`: Retrieve information about a book by book Id and update the book data info, if exists in the database. No reviews are added only in POST
+  
 
 **Note:** The options with [Authorize] needs a jwts token to get one, open the terminal in the TheBookProject/TheBookProject project and execute the command:
 
