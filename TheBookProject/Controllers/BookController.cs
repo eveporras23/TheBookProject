@@ -7,7 +7,7 @@ using TheBookProject.Services;
 
 namespace TheBookProject.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BookController : ControllerBase

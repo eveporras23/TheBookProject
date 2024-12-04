@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using Review = TheBookProject.Db.Entities.Review;
 
 namespace TheBookProject.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ReviewController : ControllerBase
@@ -24,6 +26,7 @@ namespace TheBookProject.Controllers
         }
 
         // GET: api/Review
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Review>>> GetReviews(string isbn, [FromQuery] int? page)
         {
@@ -31,6 +34,7 @@ namespace TheBookProject.Controllers
         }
 
         // GET: api/Review/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Review>> GetReview(int id)
         {

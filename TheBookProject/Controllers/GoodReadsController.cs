@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TheBookProject.Models;
@@ -5,6 +6,7 @@ using TheBookProject.Services;
 
 namespace TheBookProject.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class GoodReadsController : ControllerBase
@@ -17,6 +19,7 @@ public class GoodReadsController : ControllerBase
         _service = service;
     }
     
+    [AllowAnonymous]
     [HttpGet("{bookId}")]
     public async  Task<IActionResult> Get(string bookId)
     {

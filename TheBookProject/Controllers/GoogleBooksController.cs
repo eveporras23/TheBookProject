@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TheBookProject.Models;
 using TheBookProject.Services;
 
 namespace TheBookProject.Controllers;
 
+
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class GoogleBooksController : ControllerBase
@@ -17,6 +20,7 @@ public class GoogleBooksController : ControllerBase
         _service = service;
     }
     
+    [AllowAnonymous]
     [HttpGet("{isbn}")]
     public async Task<IActionResult> Get(string isbn)
     {
